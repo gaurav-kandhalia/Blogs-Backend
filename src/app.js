@@ -15,5 +15,9 @@ app.use(express.urlencoded({
     extended:true
 }))
 
+import blogRouter from './routes/blogPost.routes.js';
+
+app.use("/api/v1/blogs",blogRouter)
+
 
 export default app;
