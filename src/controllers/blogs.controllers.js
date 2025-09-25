@@ -39,7 +39,7 @@ export const getAllPost = asyncHandler(async (req, res) => {
     if (!posts) {
         throw new ApiError(404, "No posts found")
     }
-    res.status(200).json(new ApiResponse(200, "All blog posts fetched successfully", {posts,totalPosts:posts.length}));
+    res.status(200).json(new ApiResponse(200, "All blog posts fetched successfully", {posts,totalPosts:posts.length},true));
 });
 
 export const getPostById = asyncHandler(async (req, res) => {
@@ -51,5 +51,22 @@ export const getPostById = asyncHandler(async (req, res) => {
     if (!post) {
         throw new ApiError(404, "Post not found")
     }
-    res.status(200).json(new ApiResponse(200, "Blog post fetched successfully", post));
+    res.status(200).json(new ApiResponse(200, "Blog post fetched successfully", post,true));
+});
+
+export const updatePost = asyncHandler(async (req, res) => {
+    const { id } = req.query;
+    const { title, content, author } = req.body;
+    if (!id) {
+        throw new ApiError(400, "Post ID is required")
+    }
+    const post = await BlogPost.findById(id);
+    if (!post) {
+        throw new ApiError(404, "Post not found")
+    }
+    post.title = title || post.title;
+    post.content = content || post.content;
+    post.author = author || post.author;
+    const updatedPost = await post.save();
+    res.status(200).json(new ApiResponse(200, "Blog post updated successfully", updatedPost,true));
 });
