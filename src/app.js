@@ -15,6 +15,8 @@ app.use(express.urlencoded({
     extended:true
 }))
 
+console.log(process.env.CORS_ORIGIN,"....cors")
+
 import blogRouter from './routes/blogPost.routes.js';
 
 app.use("/api/v1/blogs",blogRouter)

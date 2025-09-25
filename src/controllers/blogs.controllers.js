@@ -12,7 +12,7 @@ export const createBlogPost = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Error in creating post")
     }
     const savedPost = await newPost.save();
-    res.status(201).json(new ApiResponse(201, "Blog post created successfully", savedPost));
+    res.status(201).json(new ApiResponse(201,savedPost,"Blog post created successfully",true));
 });
 
 
@@ -38,7 +38,7 @@ export const getAllPost = asyncHandler(async (req, res) => {
     if (!posts) {
         throw new ApiError(404, "No posts found")
     }
-    res.status(200).json(new ApiResponse(200, "All blog posts fetched successfully", {posts,totalPosts:posts.length},true));
+    res.status(200).json(new ApiResponse(200, {posts,totalPosts:posts.length},"All blog posts fetched successfully",true));
 });
 
 export const getPostById = asyncHandler(async (req, res) => {
@@ -50,7 +50,7 @@ export const getPostById = asyncHandler(async (req, res) => {
     if (!post) {
         throw new ApiError(404, "Post not found")
     }
-    res.status(200).json(new ApiResponse(200, "Blog post fetched successfully", post,true));
+    res.status(200).json(new ApiResponse(200,  post,"Blog post fetched successfully",true));
 });
 
 export const updatePost = asyncHandler(async (req, res) => {
@@ -67,7 +67,7 @@ export const updatePost = asyncHandler(async (req, res) => {
     post.content = validatedData.content || post.content;
     post.author = validatedData.author || post.author;
     const updatedPost = await post.save();
-    res.status(200).json(new ApiResponse(200, "Blog post updated successfully", updatedPost,true));
+    res.status(200).json(new ApiResponse(200,  updatedPost,"Blog post updated successfully",true));
 });
 
 
@@ -82,5 +82,5 @@ export const deletePost = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    res.status(200).json(new ApiResponse(200, "Blog post deleted successfully", null,true));
+    res.status(200).json(new ApiResponse(200, null,"Blog post deleted successfully",true));
 });
